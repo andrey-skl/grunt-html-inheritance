@@ -218,7 +218,6 @@ module.exports = function(grunt) {
 
         grunt.log.writeln();
     });
-  });
 
   var detectDestType = function (dest) {
         if (grunt.util._.endsWith(dest, '/')) {
