@@ -30,21 +30,16 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     html_inheritance: {
-      default_options: {
+      main: {
         options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+              modules: ["ver1"], //array of modules you want to build additionall to "main"
+              dstDir: "tmp",
+          },
+        files: [
+          {src: 'test/fixtures/*.html', dest: 'tmp/main/replace.html'},
+          {src: 'test/fixtures/*.html', dest: 'tmp/ver1/replace.html'},
+        ],
+
       },
     },
 

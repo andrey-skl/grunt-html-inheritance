@@ -27,21 +27,29 @@ exports.html_inheritance = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
-    test.expect(1);
+  replace: function(test) {
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actualMain = grunt.file.read('tmp/main/replace.html');
+    var actualVer = grunt.file.read('tmp/ver1/replace.html');
+
+    var expectedMain = grunt.file.read('test/expected/main/replace.html');
+    var expectedVer = grunt.file.read('test/expected/ver1/replace.html');
+
+    test.equal(actualMain, expectedMain, 'main version should equal.');
+    test.equal(actualVer, expectedVer, 'inherited version should equal.');
 
     test.done();
   },
-  custom_options: function(test) {
-    test.expect(1);
+  insert: function(test) {
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actualMain = grunt.file.read('tmp/main/replace.html');
+    var actualVer = grunt.file.read('tmp/ver1/replace.html');
+
+    var expectedMain = grunt.file.read('test/expected/main/replace.html');
+    var expectedVer = grunt.file.read('test/expected/ver1/replace.html');
+
+    test.equal(actualMain, expectedMain, 'main version should equal.');
+    test.equal(actualVer, expectedVer, 'inherited version should equal.');
 
     test.done();
   },

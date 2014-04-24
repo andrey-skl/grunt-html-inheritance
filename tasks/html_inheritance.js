@@ -105,6 +105,7 @@ module.exports = function(grunt) {
   var moduleToShowInfo = "";
 
   var processFile = function (content, srcpath) {
+
       var module = "main";
       
       //npm_modules не копируем
@@ -159,6 +160,8 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('html_inheritance', 'The engine to build htmls with replacing, inserting or modifing separated tags only using small html patches.', function() {
     var kindOf = grunt.util.kindOf;
 
+
+
         var options = this.options({
             encoding: grunt.file.defaultEncoding,
             // processContent/processContentExclude deprecated renamed to process/noProcess
@@ -191,6 +194,7 @@ module.exports = function(grunt) {
             isExpandedPair = filePair.orig.expand || false;
 
             filePair.src.forEach(function (src) {
+
                 if (detectDestType(filePair.dest) === 'directory') {
                     dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src));
                 } else {
@@ -198,7 +202,9 @@ module.exports = function(grunt) {
                     dstpath = dest;
                 }
 
+
                 if (grunt.file.isDir(src)) {
+
                     grunt.verbose.writeln('Creating ' + dest.cyan);
                     grunt.file.mkdir(dest);
                     tally.dirs++;
