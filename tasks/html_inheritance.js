@@ -14,12 +14,11 @@ module.exports = function(grunt) {
   var fs = require('fs');
   var cheerio = require('cheerio');
 
-
+  var dstpath, dstDir, modules=[];
 
   var dstDir = "../dist";
 
-  var modules = ["main", "megafon", "astral"];
-  var moduleslen = modules.length;
+  //var modules = ["main", "megafon", "astral"];
 
   var findAllBlElements = function (container) {
       return container.find("*").filter(function (index) {
@@ -106,7 +105,6 @@ module.exports = function(grunt) {
   var moduleToShowInfo = "";
 
   var processFile = function (content, srcpath) {
-      var dstpath = grunt.___fileDest;
       var module = "main";
       
       //npm_modules не копируем
@@ -114,7 +112,7 @@ module.exports = function(grunt) {
           return false;
       }
       
-      for (var i =0; i<moduleslen;i++) {
+      for (var i =0, moduleslen=modules.length; i<moduleslen;i++) {
           //определение текущего модуля
           if (dstpath.indexOf(dstDir + "/" + modules[i]) != -1) {
               module = modules[i];
@@ -175,6 +173,13 @@ module.exports = function(grunt) {
             noProcess: options.noProcess || options.processContentExclude,
         };
 
+        //Adding provided modules
+        if (options.modules){
+          modules = ["main"].concat(options.modules);
+        }
+        //saving destination directory
+        dstDir = options.dstDir;
+
         var dest;
         var isExpandedPair;
         var tally = {
@@ -190,7 +195,7 @@ module.exports = function(grunt) {
                     dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src));
                 } else {
                     dest = filePair.dest;
-                    grunt.___fileDest = dest;
+                    dstpath = dest;
                 }
 
                 if (grunt.file.isDir(src)) {
