@@ -2,6 +2,20 @@
 
 > The engine to build htmls with replacing, inserting or modifing separated tags only using small html patches.
 
+##The problem
+
+In some kinds of single page apps (AngularJS for example) the templates is just small pieces of html code stored in project folder. Sometimes you need to customize this html for different versions of app: main and version for other client, for example. Bad way to customize html is using a lot of IF: if (ver==main) <-- some tags --> else <--other tags-->. 
+
+This module provide better xslt-like way to customize html files: in main version you place "business logic attributes" bl-* in tags you want to customize:
+```html
+<div bl-mycustomtag>Here is main version</div>
+```
+And then you create child file _file_name._version_name.html, where you customize this tag:
+```html
+<div bl-mycustomtag="replace">Here is custom version</div>
+```
+
+
 ## Getting Started
 This plugin requires Grunt `~0.4.4`
 
