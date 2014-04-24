@@ -30,6 +30,9 @@ module.exports = function(grunt) {
 
           {src: ['test/fixtures/remove.html'], dest: 'tmp/main/remove.html'},
           {src: ['test/fixtures/remove.html'], dest: 'tmp/ver1/remove.html'},
+
+          {src: ['test/fixtures/insert.html'], dest: 'tmp/main/insert.html'},
+          {src: ['test/fixtures/insert.html'], dest: 'tmp/ver1/insert.html'},
         ],
 
       },

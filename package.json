@@ -30,6 +30,7 @@
   "devDependencies": {
     "grunt": "~0.4.4",
     "cheerio": "0.13.1",
+    "nodeunit": "*",
     "grunt-contrib-nodeunit": "*",
     "grunt-contrib-clean": "*"
   },

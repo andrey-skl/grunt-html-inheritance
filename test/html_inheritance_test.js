@@ -40,13 +40,27 @@ exports.html_inheritance = {
 
     test.done();
   },
-  insert: function(test) {
+  remove: function(test) {
 
     var actualMain = grunt.file.read('tmp/main/remove.html');
     var actualVer = grunt.file.read('tmp/ver1/remove.html');
 
     var expectedMain = grunt.file.read('test/expected/main/remove.html');
     var expectedVer = grunt.file.read('test/expected/ver1/remove.html');
+
+    test.equal(actualMain, expectedMain, 'main version should equal.');
+    test.equal(actualVer, expectedVer, 'inherited version should equal.');
+
+    test.done();
+  },
+
+  insert: function(test) {
+
+    var actualMain = grunt.file.read('tmp/main/insert.html');
+    var actualVer = grunt.file.read('tmp/ver1/insert.html');
+
+    var expectedMain = grunt.file.read('test/expected/main/insert.html');
+    var expectedVer = grunt.file.read('test/expected/ver1/insert.html');
 
     test.equal(actualMain, expectedMain, 'main version should equal.');
     test.equal(actualVer, expectedVer, 'inherited version should equal.');
