@@ -148,7 +148,7 @@ module.exports = function(grunt) {
       var blElements = findAllBlElements($child);
          
       var msg = " - "+srcpath + " - elements = " + blElements.length;
-      grunt.log.writeln(msg.yellow);
+      grunt.log.writeln(msg.cyan);
 
       processBuildTags(blElements, $parent);
 
@@ -184,17 +184,47 @@ module.exports = function(grunt) {
         dstDir = options.dstDir;
 
         var dest;
-        var isExpandedPair;
         var tally = {
             dirs: 0,
             files: 0
         };
 
+        var copyFunction =function(src, dst, isExpandedPair){
+          if (detectDestType(dst) === 'directory') {
+              dstpath = dest = (isExpandedPair) ? dst : unixifyPath(path.join(dst, src));
+          } else {
+              dstpath = dest = dst;
+          }
+
+
+          if (grunt.file.isDir(src)) {
+
+              grunt.verbose.writeln('Creating ' + dest.cyan);
+              grunt.file.mkdir(dest);
+              tally.dirs++;
+          } else {
+              grunt.verbose.writeln('Copying ' + src.cyan + ' -> ' + dest.cyan);
+              grunt.file.copy(src, dest, copyOptions);
+              if (options.mode !== false) {
+                  fs.chmodSync(dest, (options.mode === true) ? fs.lstatSync(src).mode : options.mode);
+              }
+              tally.files++;
+          }
+
+        }
+
         this.files.forEach(function (filePair) {
-            isExpandedPair = filePair.orig.expand || false;
+            var isExpandedPair = filePair.orig.expand || false;
 
             filePair.src.forEach(function (src) {
+              debugger;
 
+              for (var i in modules){
+                var dstModulePath = dstDir+"/"+modules[i]+"/"+src;
+                copyFunction(src, dstModulePath, isExpandedPair);
+              }
+
+/*
                 if (detectDestType(filePair.dest) === 'directory') {
                     dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src));
                 } else {
@@ -215,7 +245,7 @@ module.exports = function(grunt) {
                         fs.chmodSync(dest, (options.mode === true) ? fs.lstatSync(src).mode : options.mode);
                     }
                     tally.files++;
-                }
+                }*/
             });
         });
 

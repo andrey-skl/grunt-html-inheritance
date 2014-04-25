@@ -32,7 +32,8 @@
     "cheerio": "0.13.1",
     "nodeunit": "*",
     "grunt-contrib-nodeunit": "*",
-    "grunt-contrib-clean": "*"
+    "grunt-contrib-clean": "*",
+    "grunt-debug-task":"*"
   },
   "peerDependencies": {
     "grunt": "~0.4.4",

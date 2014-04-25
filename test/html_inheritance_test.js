@@ -22,49 +22,38 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
+var getFiles = function(fileName){
+  return {
+    actualMain: grunt.file.read('tmp/main/test/fixtures/'+fileName+'.html'),
+    actualVer: grunt.file.read('tmp/ver1/test/fixtures/'+fileName+'.html'),
+
+    expectedMain: grunt.file.read('test/expected/main/'+fileName+'.html'),
+    expectedVer: grunt.file.read('test/expected/ver1/'+fileName+'.html'),
+  }
+}
+
+var testEqual = function(test, fileName){
+    var files = getFiles(fileName)
+
+    test.equal(files.actualMain, files.expectedMain, 'main version should equal.');
+    test.equal(files.actualVer, files.expectedVer, 'inherited version should equal.');
+
+    test.done();
+}
+
 exports.html_inheritance = {
   setUp: function(done) {
     // setup here if necessary
     done();
   },
   replace: function(test) {
-
-    var actualMain = grunt.file.read('tmp/main/replace.html');
-    var actualVer = grunt.file.read('tmp/ver1/replace.html');
-
-    var expectedMain = grunt.file.read('test/expected/main/replace.html');
-    var expectedVer = grunt.file.read('test/expected/ver1/replace.html');
-
-    test.equal(actualMain, expectedMain, 'main version should equal.');
-    test.equal(actualVer, expectedVer, 'inherited version should equal.');
-
-    test.done();
+    testEqual(test, "replace");
   },
   remove: function(test) {
-
-    var actualMain = grunt.file.read('tmp/main/remove.html');
-    var actualVer = grunt.file.read('tmp/ver1/remove.html');
-
-    var expectedMain = grunt.file.read('test/expected/main/remove.html');
-    var expectedVer = grunt.file.read('test/expected/ver1/remove.html');
-
-    test.equal(actualMain, expectedMain, 'main version should equal.');
-    test.equal(actualVer, expectedVer, 'inherited version should equal.');
-
-    test.done();
+    testEqual(test, "remove");
   },
 
   insert: function(test) {
-
-    var actualMain = grunt.file.read('tmp/main/insert.html');
-    var actualVer = grunt.file.read('tmp/ver1/insert.html');
-
-    var expectedMain = grunt.file.read('test/expected/main/insert.html');
-    var expectedVer = grunt.file.read('test/expected/ver1/insert.html');
-
-    test.equal(actualMain, expectedMain, 'main version should equal.');
-    test.equal(actualVer, expectedVer, 'inherited version should equal.');
-
-    test.done();
+    testEqual(test, "insert");
   },
 };

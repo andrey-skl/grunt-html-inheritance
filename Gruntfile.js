@@ -24,17 +24,9 @@ module.exports = function(grunt) {
               modules: ["ver1"], //array of modules you want to build additionall to "main"
               dstDir: "tmp",
           },
-        files: [
-          {src: ['test/fixtures/replace.html'], dest: 'tmp/main/replace.html'},
-          {src: ['test/fixtures/replace.html'], dest: 'tmp/ver1/replace.html'},
-
-          {src: ['test/fixtures/remove.html'], dest: 'tmp/main/remove.html'},
-          {src: ['test/fixtures/remove.html'], dest: 'tmp/ver1/remove.html'},
-
-          {src: ['test/fixtures/insert.html'], dest: 'tmp/main/insert.html'},
-          {src: ['test/fixtures/insert.html'], dest: 'tmp/ver1/insert.html'},
-        ],
-
+          files: {
+            src:'test/fixtures/**.html'
+          },
       },
     },
 
@@ -52,6 +44,7 @@ module.exports = function(grunt) {
   //grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-debug-task');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.

@@ -52,7 +52,9 @@ A path to directory to place builded html
 grunt.initConfig({
   html_inheritance: {
       main: {
-          files: files, //array of files to process or grunt-compatible file selector like '**/*.html'
+          files: { 
+            src:'**.html' //array of files to process or grunt-compatible file selector like '**/*.html'
+          },
           options: {
               modules: ["version1", "version2"], //array of modules you want to build additionall to "main"
               dstDir: "../dist",
