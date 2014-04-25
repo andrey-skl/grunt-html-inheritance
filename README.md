@@ -147,7 +147,7 @@ You can change attributes and classes in child using "modify" keyword and json-l
 
 
 ```html
-<div bl-filterblock=’modify={"addattr":{"test1":"test2", "test3":"test4"}, "removeattr":"test1 test2", "addclass":"testaddedfclass", "removeclass":"testclass"}’></div>
+<div bl-filterblock='modify={"addattr":{"test1":"test2", "test3":"test4"}, "removeattr":"test1 test2", "addclass":"testaddedfclass", "removeclass":"testclass"}'></div>
 ```
 
 Let's see closer to syntax:
@@ -155,28 +155,28 @@ Let's see closer to syntax:
 ####addattr
 Adding attributes with values:
 ```html
-<div bl-filterblock=’modify={"addattr":{"test1":"test2", "test3":"test4"}’></div>
+<div bl-filterblock='modify={"addattr":{"test1":"test2", "test3":"test4"}'></div>
 ```
 This code will add "test1" attribute with "test2" value and "test3" attribute with "test4" value
 
 ####removeattr
 Removing attributes:
 ```html
-<div bl-filterblock=’modify={"removeattr":"test1 test2"}’></div>
+<div bl-filterblock='modify={"removeattr":"test1 test2"}'></div>
 ```
 This code will remove "test1" and "test2" attributes
 
 ####addclass
 Adding classes:
 ```html
-<div bl-filterblock=’modify={"addclass":"testaddedfclass"}’></div>
+<div bl-filterblock='modify={"addclass":"testaddedfclass"}'></div>
 ```
 This code will remove "testaddedfclass" class
 
 ####removeclass
 Removing classes:
 ```html
-<div bl-filterblock=’modify={"removeclass":"testclass"}’></div>
+<div bl-filterblock='modify={"removeclass":"testclass"}'></div>
 ```
 This code will remove "testclass" class
 
