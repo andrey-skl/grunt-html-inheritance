@@ -58,13 +58,14 @@ module.exports = function(grunt) {
 
               parentEl.replaceWith(fakeParent.html());
           }
-          if (method.indexOf("modify=") != -1) {
-              grunt.log.writeln("modifing element ", sel);
 
+          if (method.indexOf("modify=") != -1) {
+            
+              grunt.log.writeln("modifing element ", sel);
               var data = JSON.parse(method.replace("modify=", ""));
               if (data.addattr) {
                   for (var i in data.addattr) {
-                      parentEl.addAttr(i, data.addattr[i]);
+                      parentEl.attr(i, data.addattr[i]);
                   }
               }
               if (data.removeattr) {
@@ -217,35 +218,10 @@ module.exports = function(grunt) {
             var isExpandedPair = filePair.orig.expand || false;
 
             filePair.src.forEach(function (src) {
-              debugger;
-
               for (var i in modules){
                 var dstModulePath = dstDir+"/"+modules[i]+"/"+src;
                 copyFunction(src, dstModulePath, isExpandedPair);
               }
-
-/*
-                if (detectDestType(filePair.dest) === 'directory') {
-                    dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src));
-                } else {
-                    dest = filePair.dest;
-                    dstpath = dest;
-                }
-
-
-                if (grunt.file.isDir(src)) {
-
-                    grunt.verbose.writeln('Creating ' + dest.cyan);
-                    grunt.file.mkdir(dest);
-                    tally.dirs++;
-                } else {
-                    grunt.verbose.writeln('Copying ' + src.cyan + ' -> ' + dest.cyan);
-                    grunt.file.copy(src, dest, copyOptions);
-                    if (options.mode !== false) {
-                        fs.chmodSync(dest, (options.mode === true) ? fs.lstatSync(src).mode : options.mode);
-                    }
-                    tally.files++;
-                }*/
             });
         });
 

@@ -56,4 +56,7 @@ exports.html_inheritance = {
   insert: function(test) {
     testEqual(test, "insert");
   },
+  attributes: function(test) {
+    testEqual(test, "attributes");
+  },
 };
