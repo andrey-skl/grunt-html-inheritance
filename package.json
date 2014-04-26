@@ -1,7 +1,7 @@
 {
   "name": "grunt-html-inheritance",
   "description": "The engine to build htmls with replacing, inserting or modifing separated tags only using small html patches.",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "homepage": "https://github.com/huston007/grunt-html-inheritance",
   "author": {
     "name": "Andrey Skladchikov",

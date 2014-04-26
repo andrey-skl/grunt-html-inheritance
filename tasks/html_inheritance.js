@@ -217,12 +217,14 @@ module.exports = function(grunt) {
         this.files.forEach(function (filePair) {
             var isExpandedPair = filePair.orig.expand || false;
 
-            filePair.src.forEach(function (src) {
-              for (var i in modules){
-                var dstModulePath = dstDir+"/"+modules[i]+"/"+src;
-                copyFunction(src, dstModulePath, isExpandedPair);
-              }
-            });
+            for (var i in modules) {
+                filePair.src.forEach(function (src) {
+
+                    var dstModulePath = dstDir + "/" + modules[i] + "/" + src;
+                    copyFunction(src, dstModulePath, isExpandedPair);
+
+                });
+            }
         });
 
         if (tally.dirs) {

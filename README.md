@@ -116,7 +116,7 @@ Child html:
 
 ###3. Insert
 
-Other case is you no elements in main version, but custom element in custom version - insert element in any position in custom version.
+Other case is you want no elements in main version, but custom element in custom version - insert element in any position in custom version.
 
 In main html you have to specify that you dont want to see that element in main version using keyword "removable":
 ```html
