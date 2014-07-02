@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     html_inheritance: {
       main: {
         options: {
-              modules: ["ver1"], //array of modules you want to build additionall to "main"
+              modules: ["main", "ver1"], //array of modules you want to build additionall to "main"
               dstDir: "tmp",
           },
           files: {
