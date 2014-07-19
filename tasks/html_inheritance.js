@@ -14,19 +14,24 @@ module.exports = function(grunt) {
   var fs = require('fs');
   var cheerio = require('cheerio');
 
-  var dstpath, dstDir, modules=[];
+  var entities = require('cheerio/node_modules/entities');
+  // override it's methods, to make them have no effect
+  entities.encodeXML = function(str) { return str; }
+  // and this one to do the same for tag attributes that contain encoded entities &quot; -> &#38;quot;
+  entities.escape = function(str) { return str; }
 
+  var dstpath, dstDir, modules=[];
   var dstDir = "../dist";
 
-  //var modules = ["main", "megafon", "astral"];
-
   var findAllBlElements = function (container) {
-      return container.find("*").filter(function (index) {
-          var el = this[0];
+      return container.find("*").filter(function (index, element) {
+          var el = element;
           for (var i in el.attribs) {
               if (i.indexOf("bl-") != -1) {
-                  this.data("bl-attr", i);
+                  el.attribs["bl-attr"] = i;
                   return true;
+              } else {
+                return false;
               }
           }
       });
@@ -34,15 +39,16 @@ module.exports = function(grunt) {
 
   var processBuildTags = function(container, $parent) {
       container.each(function (i, el) {
-          var attrname = el.data["bl-attr"];
+          var attrname = el.attribs["bl-attr"];
           var method = el.attribs[attrname];
           var sel = "*[" + attrname + "]";
-          this.removeAttr(attrname);
-
+          delete el.attribs[attrname];
+          delete el.attribs["bl-attr"];
+          
           var parentEl = $parent.find(sel);
 
           var fakeParent = cheerio("<div></div>");
-          fakeParent.append(this);
+          fakeParent.append(el);
 
           if (method == "replace") {
               grunt.log.writeln("replacing element ", sel);
@@ -82,8 +88,8 @@ module.exports = function(grunt) {
   };
 
   var cleanFromBlTags = function (content) {
-      var removableRegex = /bl-[a-z]+="removable"/ig;
-      var cleanRegex = /bl-[a-z]+(="[^"]+")?/ig;
+      var removableRegex = /\sbl-[a-z]+="removable"/ig;
+      var cleanRegex = /\sbl-[a-z]+(="[^"]+")?/ig;
       var isRemovable = removableRegex.test(content);
       if (!isRemovable) {
           return content.replace(cleanRegex, "");
@@ -91,12 +97,13 @@ module.exports = function(grunt) {
           var $container = cheerio("<div>" + content + "</div>");
           var allBlElements = findAllBlElements($container);
           
-          allBlElements.filter(function (i) {
-              var el = this[0];
-              var attrname = el.data["bl-attr"];
+          allBlElements.filter(function (i, element) {
+              var el = element;
+              var attrname = el.attribs["bl-attr"];
               var method = el.attribs[attrname];
-              this.removeAttr(attrname);
-              return method == "removable";
+              var result = method == "removable"
+              delete el.attribs[attrname];
+              return result;
           }).remove();
           
           return $container.html();
@@ -106,7 +113,6 @@ module.exports = function(grunt) {
   var moduleToShowInfo = "";
 
   var processFile = function (content, srcpath) {
-
       var module = "main";
       
       //npm_modules не копируем
@@ -137,6 +143,7 @@ module.exports = function(grunt) {
 
       //Если есть дочерний файл, создаём его DOM, иначе возвращаем очищенный шаблон
       var childPath = srcpath.replace(".html", "." + module + ".html");
+      grunt.log.writeln(childPath); 
       if (!fs.existsSync(childPath)) {
           return cleanFromBlTags(content);
       }
@@ -145,18 +152,30 @@ module.exports = function(grunt) {
       
       //создаём DOM - элемент из текущего файла
       var $parent = cheerio(cheerio("<div>"+content+"</div>"));
-      
       var blElements = findAllBlElements($child);
          
       var msg = " - "+srcpath + " - elements = " + blElements.length;
       grunt.log.writeln(msg.cyan);
 
       processBuildTags(blElements, $parent);
-
       return $parent.html();
-      
   };
 
+  var detectDestType = function (dest) {
+      if (grunt.util._.endsWith(dest, '/')) {
+          return 'directory';
+      } else {
+          return 'file';
+      }
+  };
+
+  var unixifyPath = function (filepath) {
+      if (process.platform === 'win32') {
+          return filepath.replace(/\\/g, '/');
+      } else {
+          return filepath;
+      }
+  };
 
   grunt.registerMultiTask('html_inheritance', 'The engine to build htmls with replacing, inserting or modifing separated tags only using small html patches.', function() {
     var kindOf = grunt.util.kindOf;
@@ -187,13 +206,12 @@ module.exports = function(grunt) {
           files: 0
       };
 
-      var copyFunction =function(src, dst, isExpandedPair){
+      var copyFunction = function(src, dst, isExpandedPair){
         if (detectDestType(dst) === 'directory') {
             dstpath = dest = (isExpandedPair) ? dst : unixifyPath(path.join(dst, src));
         } else {
             dstpath = dest = dst;
         }
-
 
         if (grunt.file.isDir(src)) {
 
@@ -209,17 +227,15 @@ module.exports = function(grunt) {
             tally.files++;
         }
 
-      }
+      };
 
       this.files.forEach(function (filePair) {
           var isExpandedPair = filePair.orig.expand || false;
 
           for (var i in modules) {
               filePair.src.forEach(function (src) {
-
                   var dstModulePath = dstDir + "/" + modules[i] + "/" + src;
                   copyFunction(src, dstModulePath, isExpandedPair);
-
               });
           }
       });
@@ -234,21 +250,4 @@ module.exports = function(grunt) {
 
       grunt.log.writeln();
     });
-
-  var detectDestType = function (dest) {
-        if (grunt.util._.endsWith(dest, '/')) {
-            return 'directory';
-        } else {
-            return 'file';
-        }
-    };
-
-    var unixifyPath = function (filepath) {
-        if (process.platform === 'win32') {
-            return filepath.replace(/\\/g, '/');
-        } else {
-            return filepath;
-        }
-    };
-
 };
