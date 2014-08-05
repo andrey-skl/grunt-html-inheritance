@@ -30,10 +30,9 @@ module.exports = function(grunt) {
               if (i.indexOf("bl-") != -1) {
                   el.attribs["bl-attr"] = i;
                   return true;
-              } else {
-                return false;
-              }
+              } 
           }
+          return false;
       });
   };
 
