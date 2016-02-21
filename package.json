@@ -33,10 +33,10 @@
     "nodeunit": "*",
     "grunt-contrib-nodeunit": "*",
     "grunt-contrib-clean": "*",
-    "grunt-debug-task":"*"
+    "grunt-debug-task": "*"
   },
   "peerDependencies": {
-    "grunt": "~0.4.4",
+    "grunt": ">=0.4.0",
     "cheerio": "*"
   },
   "keywords": [
